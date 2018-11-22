@@ -170,18 +170,20 @@ class Robot(object):
         room:  a RectangularRoom object.
         speed: a float (speed > 0)
         """
+        #raise NotImplementedError
         self.room = room
         self.speed = speed
         self.position = room.getRandomPosition()
-        self.d = random.randint(0, 359)
+        self.direction = random.randint(0, 359)
+        self.room.cleanTileAtPosition(self.position)
 
     def getRobotPosition(self):
         """
         Return the position of the robot.
         returns: a Position object giving the robot's position.
         """
+        #raise NotImplementedError
         return self.position
-
 
     def getRobotDirection(self):
         """
@@ -189,13 +191,15 @@ class Robot(object):
         returns: an integer d giving the direction of the robot as an angle in
         degrees, 0 <= d < 360.
         """
-        return self.d
+        #raise NotImplementedError
+        return self.direction
 
     def setRobotPosition(self, position):
         """
         Set the position of the robot to POSITION.
         position: a Position object.
         """
+        #raise NotImplementedError
         self.position = position
 
     def setRobotDirection(self, direction):
@@ -203,11 +207,12 @@ class Robot(object):
         Set the direction of the robot to DIRECTION.
         direction: integer representing an angle in degrees
         """
-        self.d = direction
+        #raise NotImplementedError
+        self.direction = direction
 
     def updatePositionAndClean(self):
         """
-        Simulate the passage of a single time-step.
+        Simulate the raise passage of a single time-step.
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
@@ -218,19 +223,23 @@ class Robot(object):
 class StandardRobot(Robot):
     """
     A StandardRobot is a Robot with the standard movement strategy.
-
     At each time-step, a StandardRobot attempts to move in its current
     direction; when it would hit a wall, it *instead* chooses a new direction
     randomly.
     """
     def updatePositionAndClean(self):
         """
-        Simulate the passage of a single time-step.
-
+        Simulate the raise passage of a single time-step.
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
+        #raise NotImplementedError
+        next_position = self.getRobotPosition().getNewPosition(self.getRobotDirection(), self.speed)
+        if self.room.isPositionInRoom(next_position) == False:
+            self.setRobotDirection(random.randint(0, 359))
+        else:
+            self.setRobotPosition(next_position)
+            self.room.cleanTileAtPosition(next_position)
 
 
 # Uncomment this line to see your implementation of StandardRobot in action!
