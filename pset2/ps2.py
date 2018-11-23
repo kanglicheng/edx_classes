@@ -295,11 +295,17 @@ class RandomWalkRobot(Robot):
     def updatePositionAndClean(self):
         """
         Simulate the passage of a single time-step.
-
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
+        #raise NotImplementedError
+        next_position = self.getRobotPosition().getNewPosition(random.randint(0, 359), self.speed)
+        if self.room.isPositionInRoom(next_position) == False:
+            self.setRobotDirection(random.randint(0, 359))
+        else:
+            self.setRobotPosition(next_position)
+            self.setRobotDirection(random.randint(0, 359))
+            self.room.cleanTileAtPosition(next_position)
 
 
 def showPlot1(title, x_label, y_label):
